@@ -13,8 +13,15 @@
 ActiveRecord::Schema.define(version: 2020_12_29_140612) do
 
   create_table "bookings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "event_id"
+    t.bigint "user_id"
+    t.integer "inviter"
+    t.integer "status"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["event_id", "user_id"], name: "index_bookings_on_event_id_and_user_id", unique: true
+    t.index ["event_id"], name: "index_bookings_on_event_id"
+    t.index ["user_id"], name: "index_bookings_on_user_id"
   end
 
   create_table "events", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -23,7 +30,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_140612) do
     t.datetime "end_time"
     t.text "description"
     t.boolean "all_day"
-    t.integer "status"
+    t.integer "status", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["end_time"], name: "index_events_on_end_time"
