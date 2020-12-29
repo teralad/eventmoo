@@ -1,41 +1,60 @@
 require 'activerecord-import'
 require 'csv'
 
-class EventRow
+class EventObject
   def initialize(data)
-    starttime,endtime,description,users#rsvp,allday
     @title = data[0]
     @start_time = data[1]
     @end_time = data[2]
     @description = data[3]
+    @rsvp_data = data[4]
     @all_day = data[5].downcase == 'true' ? true : false
     @status = 2
   end
 
-  def to_h
-    {
-      username: @username,
-      email:    @email,
-      phone:    clean_phone
-    }
+  def to_obj
+    @event_object = Event.new(
+      title: @title,
+      start_time: @start_time,
+      end_time: @end_time,
+      description: @description,
+      all_day: @all_day,
+      status: @status
+    )
+    booking_object = BookingRow.new(@rsvp_data)
+    @event_object.bookings.build(booking_object.to_ar)
+    @event_object
   end
 
-  private
+  class BookingRow
+    def initialize(data)
+      @rsvp = data
+      @booking_obj = []
+      process_rsvp
+    end
 
-  def clean_phone
-    @phone = @phone.gsub(/[^0-9A-Za-z]/, '')[/[^Xx]+/]
+    def to_ar
+      @booking_obj
+    end
+
+    private
+    def process_rsvp
+      return if @rsvp.blank?
+      @rsvp = @rsvp.split(';').map{|d| d.split('#')}.to_h if @rsvp.is_a?(String)
+      @rsvp.each do |username, rsvp_status|
+        user = User.find_by(username: username)
+        if user.present?
+          @booking_obj << {
+            user_id: user.id,
+            status: Booking.statuses[rsvp_status]
+          }
+        end
+      end
+    end
   end
 end
-
 
 event_csv_path = Rails.root.join('lib', 'seed_files', 'events.csv')
-events = []
 CSV.foreach(event_csv_path, headers: true) do |row|
-  event_data = EventRow.new(row).to_h
-  events << User.new(event_data)
-  if events.length >= 500
-    import_records(model_name: Event.name, records: events)
-    users.clear
-  end
+  import_records(model_name: Event.name, records: [EventObject.new(row).to_obj], recursive: true)
 end
-import_records(model_name: Event.name, records: events)
