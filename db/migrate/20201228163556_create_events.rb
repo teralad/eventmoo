@@ -6,7 +6,7 @@ class CreateEvents < ActiveRecord::Migration[6.0]
       t.datetime  :end_time
       t.text      :description
       t.boolean   :all_day
-      t.integer   :status
+      t.integer   :status, default: 0
       t.timestamps
     end
   end
