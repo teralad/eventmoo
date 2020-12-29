@@ -1,7 +1,7 @@
 CHUNK_SIZE = 1000
 module DatabaseHelper
 
-  def import_records(model_name: , records:)
+  def import_records(model_name: , records:, recursive: false)
     model = model_name.constantize
     begin
       model.import! records
