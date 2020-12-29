@@ -9,7 +9,7 @@ class EventRow
     @end_time = data[2]
     @description = data[3]
     @all_day = data[5].downcase == 'true' ? true : false
-    @status =
+    @status = 2
   end
 
   def to_h

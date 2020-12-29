@@ -1,6 +1,8 @@
 class Event < ApplicationRecord
 
-  enum status: [:created, :completed, :active]
+  # Status created and archived is given so that
+  # moderation can be introduced for created events.
+  enum status: [:created, :completed, :active, :archived]
 
   has_many :bookings
 
