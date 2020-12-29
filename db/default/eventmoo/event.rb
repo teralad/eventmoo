@@ -40,15 +40,16 @@ class EventObject
     private
     def process_rsvp
       return if @rsvp.blank?
+
       @rsvp = @rsvp.split(';').map{|d| d.split('#')}.to_h if @rsvp.is_a?(String)
       @rsvp.each do |username, rsvp_status|
         user = User.find_by(username: username)
-        if user.present?
-          @booking_obj << {
-            user_id: user.id,
-            status: Booking.statuses[rsvp_status]
-          }
-        end
+        next unless user.present?
+
+        @booking_obj << {
+          user_id: user.id,
+          status: Booking.statuses[rsvp_status]
+        }
       end
     end
   end
