@@ -54,6 +54,8 @@ $ bundle exec rake test
 * Fixed line phone number can be used only when the entire country code is provided before the fixed line number.
 * Anything followed after 'X' in phone number is ignored along with 'X'.
 * Event is not owned by any user in the platform.
+* Moderation for events is not required.
+*
 
 ## Contributing
 
