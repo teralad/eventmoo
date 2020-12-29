@@ -1,6 +1,7 @@
 require 'activerecord-import'
 require 'csv'
 
+CACHE = ActiveSupport::Cache::MemoryStore.new()
 class EventObject
   def initialize(data)
     @title = data[0]
@@ -38,16 +39,24 @@ class EventObject
     end
 
     private
+    def get_and_store_user_id(username)
+      id = User.find_by(username: username)&.id
+      return nil if id.blank?
+
+      CACHE.write(username, id)
+      id
+    end
+
     def process_rsvp
       return if @rsvp.blank?
 
       @rsvp = @rsvp.split(';').map{|d| d.split('#')}.to_h if @rsvp.is_a?(String)
       @rsvp.each do |username, rsvp_status|
-        user = User.find_by(username: username)
-        next unless user.present?
+        user_id = CACHE.read(username) || get_and_store_user_id(username)
+        next unless user_id.present?
 
         @booking_obj << {
-          user_id: user.id,
+          user_id: user_id,
           status: Booking.statuses[rsvp_status]
         }
       end
