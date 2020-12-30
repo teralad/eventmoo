@@ -1,25 +1,37 @@
 <p id="notice"><%= notice %></p>
 
 <h1>Events</h1>
+<%= form_tag(events_path, method: :get) do %>
+  <%= datetime_field_tag(:start_time, params[:start_time]||Time.now.strftime("%Y-%m-%dT%H:%M")) %>
+  <%= datetime_field_tag(:end_time, params[:end_time]||(Time.now+2.hour).strftime("%Y-%m-%dT%H:%M")) %>
+  <%= submit_tag("Search") %>
+<% end %>
 
-<table>
-  <thead>
+
+<table class='table'>
+  <thead class='thead-dark'>
     <tr>
-      <th colspan="3"></th>
+      <th scope="col">Name</th>
+      <th scope="col">Timings</th>
+      <th scope="col">Description</th>
+      <th scope="col">Status</th>
+      <th scope="col"></th>
+      <th scope="col"></th>
     </tr>
   </thead>
 
   <tbody>
     <% @events.each do |event| %>
       <tr>
-        <td><%= link_to 'Show', event %></td>
-        <td><%= link_to 'Edit', edit_event_path(event) %></td>
-        <td><%= link_to 'Destroy', event, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td scope="row"><%= event.title %></td>
+        <td scope="row"><%= event.timings %></td>
+        <td scope="row"><%= event.description %></td>
+        <td scope="row"><%= event.status %></td>
+        <td scope="row"><%= link_to 'Edit', edit_event_path(event) %></td>
+        <td scope="row"><%= link_to 'Destroy', event, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
 <br>
-
-<%= link_to 'New Event', new_event_path %>
