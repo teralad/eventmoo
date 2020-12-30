@@ -21,6 +21,11 @@ class BookingCsvRow
     id
   end
 
+  def confirmed_bookings_list(u_id)
+    s_time, e_time = @event.start_time, @event.end_time
+    Booking.confirmed.overlap(s_time, e_time).where(user_id: u_id)
+  end
+
   def process_rsvp
     return if @rsvp.blank?
 
@@ -28,7 +33,7 @@ class BookingCsvRow
     @rsvp.each do |username, rsvp_status|
       user_id = @@cache.read(username) || get_and_store_user_id(username)
       next unless user_id.present?
-      bookings = Booking.confirmed.overlap(@event.start_time, @event.end_time).where(user_id: user_id)
+      bookings = rsvp_status.downcase == 'yes' ? confirmed_bookings_list(user_id) : nil
 
       @booking_obj << {
         event_id: @event.id,
