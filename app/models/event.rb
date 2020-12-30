@@ -19,10 +19,8 @@ class Event < ApplicationRecord
   end
 
   def get_end_time
-    if self.end_time.present?
-      self.end_time
-    elsif self.all_day
-      self.start_time.end_of_day
-    end
+    return end_time if end_time.present?
+
+    self.start_time.end_of_day if self.all_day
   end
 end
