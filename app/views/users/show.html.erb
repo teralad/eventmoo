@@ -1,4 +1,16 @@
 <p id="notice"><%= notice %></p>
 
-<%= link_to 'Edit', edit_user_path(@user) %> |
+<h5>Name  : <%= @user.username %></h5>
+<h5>Email : <%= @user.email %></h5>
+<h5>Phone : <%= @user.phone %></h5>
+<br>
+<h5> Availability Checker(Provide Time Interval Below) </h5>
+
+<%= form_tag(user_path, method: :get) do %>
+  <%= date_field_tag(:start_time, params[:start_time]||(Time.now-3.day).strftime("%Y-%m-%d")) %>
+  <%= date_field_tag(:end_time, params[:end_time]||Time.now.strftime("%Y-%m-%d")) %>
+  <%= submit_tag("Search") %>
+<% end %>
+
+
 <%= link_to 'Back', users_path %>
