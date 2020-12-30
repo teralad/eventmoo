@@ -11,11 +11,18 @@ class Event < ApplicationRecord
 
   before_create :mark_complete_if_end_date_in_past
 
+  def end_time_is_in_past
+    end_time.present? && end_time.to_datetime < Time.now.to_datetime
+  end
+
+  def start_time_is_in_past
+    all_day && start_time.present? && start_time.to_date < Date.today
+  end
+
   def mark_complete_if_end_date_in_past
-    if (end_time.present? && end_time.to_datetime < Time.now.to_datetime) ||
-      (all_day && start_time.present? && start_time.to_date < Date.today)
-      self.status = self.class.statuses[:completed]
-    end
+    return unless (end_time_is_in_past || start_time_is_in_past)
+
+    self.status = self.class.statuses[:completed]
   end
 
   def get_end_time
