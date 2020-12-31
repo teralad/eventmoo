@@ -64,6 +64,9 @@ $ bundle exec rake test
 - Event is not owned by any user in the platform.
 - Moderation for events is not required.
 - If event is not valid that event is skipped from creation.
+- End date for all day event is assumed to be end of day if end time is before the start time.
+  - Example : start time is 20th jan 2000 and end time is 20 jan 1999,
+    here end date is converted to end of day 20th jan 2000.
 - Event is invalid if :
   - End date is before the start date
   - Start date is not present

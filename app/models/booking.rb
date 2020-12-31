@@ -10,8 +10,9 @@ class Booking < ApplicationRecord
 
   scope :confirmed, -> { where(status: 'yes') }
   scope :overlap, ->(s_time, e_time) { joins(:event).
-    where("start_time between ? and ? or end_time between ? and ?",
-      s_time, e_time, s_time, e_time)
+    where("start_time between ? and ? or end_time between ? and ?
+      or start_time < ? and end_time > ?",
+      s_time, e_time, s_time, e_time, s_time, e_time)
   }
 
   def set_status

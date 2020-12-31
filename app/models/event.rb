@@ -8,14 +8,28 @@ class Event < ApplicationRecord
   has_many :bookings
 
   validate :end_time_cannot_precede_start_time
+  validate :event_timings
   validates_presence_of :start_time
   validates_presence_of :end_time, if: proc { |event| !event.all_day }
 
 
   before_create :mark_complete_if_end_date_in_past
+  before_create :correct_end_time
+
+  def correct_end_time
+    if all_day && end_time < start_time
+      self.end_time = self.start_time.end_of_day
+    end
+  end
+
+  def event_timings
+    return if all_day || end_time.present?
+
+    errors.add(:end_time, "is required if event is not all day")
+  end
 
   def end_time_cannot_precede_start_time
-    return if all_day || end_time.blank? || end_time > start_time
+    return if end_time.blank? || end_time > start_time
 
     errors.add(:end_time, "cannot precede start time")
   end
