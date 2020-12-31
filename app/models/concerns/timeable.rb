@@ -20,8 +20,12 @@ module Timeable
   end
 
   def get_intervals(range)
-    s_time = Time.parse(range.start_time).beginning_of_day
-    e_time = Time.parse(range.end_time).end_of_day
+    if range.start_time.is_a?(String)
+      range.start_time = Time.parse(range.start_time)
+      range.end_time = Time.parse(range.end_time)
+    end
+    s_time = range.start_time.beginning_of_day
+    e_time = range.end_time.end_of_day
     enumerate_hours(s_time, e_time)
   end
 
