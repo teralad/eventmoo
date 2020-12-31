@@ -51,14 +51,16 @@ $ bundle exec rake test
 
 ## Assumptions
 
-* The user will provide country ISO when he is creating an account.
-* Mobile numbers can be used in phone field with or without country code.
-* Fixed line phone number can be used only when the entire country code is provided before the fixed line number.
-* Anything followed after 'X' in phone number is ignored along with 'X'.
-* Event is not owned by any user in the platform.
-* Moderation for events is not required.
-* If event is not valid that event is skipped from creation.
-
+- The user will provide country ISO when he is creating an account.
+- Mobile numbers can be used in phone field with or without country code.
+- Fixed line phone number can be used only when the entire country code is provided before the fixed line number.
+- Anything followed after 'X' in phone number is ignored along with 'X'.
+- Event is not owned by any user in the platform.
+- Moderation for events is not required.
+- If event is not valid that event is skipped from creation.
+- Event is invalid if :
+  - End date is before the start date
+  - Start date is not present
 
 ## Contributing
 
