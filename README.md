@@ -9,6 +9,7 @@ To get started with running this locally, you'll need the following -
 ```
 mysql
 rbenv/asdf/rvm
+yarn
 ```
 
 ### Prerequisites
@@ -25,6 +26,7 @@ The following commands are to be run in the root of the project to get started w
 ```
 $ gem install bundler
 $ bundle install
+$ yarn install
 ```
 
 To initialize the database, run
@@ -55,7 +57,8 @@ $ bundle exec rake test
 * Anything followed after 'X' in phone number is ignored along with 'X'.
 * Event is not owned by any user in the platform.
 * Moderation for events is not required.
-*
+* If event is not valid that event is skipped from creation.
+
 
 ## Contributing
 
