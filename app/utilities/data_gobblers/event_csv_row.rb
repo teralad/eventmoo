@@ -11,7 +11,7 @@ class EventCsvRow
   end
 
   def create_event!
-    @event_object = Event.create(
+    @event = Event.create(
       title: @title,
       start_time: @start_time,
       end_time: @end_time,
@@ -19,6 +19,8 @@ class EventCsvRow
       all_day: @all_day,
       status: @status
     )
-    BookingCsvRow.new(@rsvp_data, @event_object).bulk_insert_bookings!
+    if @event&.id&.present?
+      BookingCsvRow.new(@rsvp_data, @event).bulk_insert_bookings!
+    end
   end
 end
