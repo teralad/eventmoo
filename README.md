@@ -51,6 +51,7 @@ $ bundle exec rails s
 Run the tests using
 
 ```
+$ RAILS_ENV=test rails db:seed
 $ bundle exec rake test
 ```
 
