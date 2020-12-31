@@ -34,6 +34,11 @@ To initialize the database, run
 ```
 $ bundle exec rails db:create db:migrate
 ```
+To populate the database, run
+
+```
+$ bundle exec rails db:seed
+```
 
 To start the server, please run
 
