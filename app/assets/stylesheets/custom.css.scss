@@ -1,0 +1,35 @@
+@import 'bootstrap/dist/css/bootstrap';
+
+.navbar {
+
+background-color: #FDF6EA !important;
+
+}
+
+
+
+.navbar-brand {
+
+font-size: 3rem;
+
+}
+
+
+
+.table-responsive {
+    max-height:500px;
+}
+
+.tableFixHead thead th {
+  position: sticky;
+  top: 0;
+}
+.tableFixHead {
+  overflow-y: auto;
+}
+.tableFixHead td {
+  box-shadow: inset 1px -1px #000;
+}
+.yellow-color-row {
+  background-color: yellow !important;
+}

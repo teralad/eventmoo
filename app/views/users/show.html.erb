@@ -1,4 +1,48 @@
 <p id="notice"><%= notice %></p>
-
-<%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>
+<br><br>
+<h5>Name  : <%= @user.username %></h5>
+<h5>Email : <%= @user.email %></h5>
+<h5>Phone : <%= @user.phone %></h5>
+<br>
+<h5> Availability Checker(Provide Time Interval Below) </h5>
+
+<%= form_tag(user_path, method: :get) do %>
+  <%= date_field_tag(:start_time, params[:start_time]||"2019-01-19") %>
+  <%= date_field_tag(:end_time, params[:end_time]||"2019-02-01") %>
+  <%= submit_tag("Search") %>
+<% end %>
+
+<div class="container">
+  <div class="panel panel-default">
+    <div class="panel-body table-responsive tableFixHead">
+      <table class='table table-bordered'>
+        <thead class='thead-dark'>
+          <tr>
+            <th scope="col">Day Name</th>
+            <th scope="col">Start Time</th>
+            <th scope="col">End Time</th>
+            <th scope="col">Availability</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @availabe_slots.each do |availability| %>
+            <% st = Time.parse(availability[:st]) %>
+            <% et = Time.parse(availability[:st]) + 2.hour %>
+            <% if availability[:availability] %>
+              <tr>
+            <% else %>
+              <tr class="yellow-color-row">
+            <% end %>
+              <td scope="row"><%= st.strftime("%A") %></td>
+              <td scope="row"><%= st %></td>
+              <td scope="row"><%= et %></td>
+              <td scope="row"><%= availability[:availability] ? 'Yes' : 'No' %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

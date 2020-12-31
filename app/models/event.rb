@@ -1,5 +1,6 @@
 class Event < ApplicationRecord
-
+  include Timeable
+  include EventViewable
   # Status created and archived is given so that
   # moderation can be introduced for created events.
   enum status: [:created, :completed, :active, :archived]
@@ -8,8 +9,15 @@ class Event < ApplicationRecord
 
   validates_presence_of :start_time
   validates_presence_of :end_time, if: proc { |event| !event.all_day }
+  validate :end_time_cannot_precede_start_time
 
   before_create :mark_complete_if_end_date_in_past
+
+  def end_time_cannot_precede_start_time
+    return if end_time > start_time
+
+    errors.add(:end_time, "cannot precede start time")
+  end
 
   def end_time_is_in_past
     end_time.present? && end_time.to_datetime < Time.now.to_datetime
