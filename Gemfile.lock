@@ -236,7 +236,7 @@ DEPENDENCIES
   bootsnap (>= 1.4.2)
   byebug
   capybara (>= 3.34.0)
-  jbuilder (~> 2.10, >= 2.10.1)
+  jbuilder (~> 2.11, >= 2.11.5)
   listen (~> 3.2)
   mysql2 (~> 0.5.3)
   pry (~> 0.13.1)
